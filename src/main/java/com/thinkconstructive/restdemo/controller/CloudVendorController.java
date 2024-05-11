@@ -3,6 +3,11 @@ package com.thinkconstructive.restdemo.controller;
 import com.thinkconstructive.restdemo.Response.ResponseHandler;
 import com.thinkconstructive.restdemo.model.CloudVendor;
 import com.thinkconstructive.restdemo.service.CloudVendorService;
+import com.thinkconstructive.restdemo.service.impl.CloudVendorServiceImpl;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("cloudvendor")
+@CacheConfig(cacheNames = "CloudVendor")
 public class CloudVendorController {
 
     CloudVendorService cloudVendorService;
@@ -22,14 +28,15 @@ public class CloudVendorController {
 
 
     @GetMapping("{vendorId}")
+    @Cacheable(key="#vendorId")
     public ResponseEntity<Object> getCloudVendorDetails(@PathVariable("vendorId") String vendorId){
-
+        System.out.println("Getting Student with db {} "+ vendorId);
         return ResponseHandler.responseBuilder("Requested vendor details given here",
                 HttpStatus.OK,cloudVendorService.getCloudVendor(vendorId));
     }
 
     @GetMapping()
-    public List<CloudVendor> getAllCloudVendorDetails(){
+    public List<CloudVendor> getAllCloudVendorDetails() throws InterruptedException {
         return cloudVendorService.getAllCloudVendors();
     }
      @PostMapping
@@ -39,6 +46,7 @@ public class CloudVendorController {
      }
 
      @PutMapping
+     @CacheEvict(key = "#cloudVendor",allEntries = true)
      public String updateCloudVendorDetails(@RequestBody CloudVendor cloudVendor){
         return cloudVendorService.updateCloudVendor(cloudVendor);
      }
@@ -48,4 +56,11 @@ public class CloudVendorController {
 
        return cloudVendorService.deleteCloudVendor(vendorId);
      }
+
+//    @GetMapping()
+//    public List<CloudVendor> checkAsyncroCall() throws InterruptedException {
+//        return cloudVendorService.getAllCloudVendors();
+//    }
+
+
 }
