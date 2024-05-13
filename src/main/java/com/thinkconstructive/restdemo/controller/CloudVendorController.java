@@ -35,7 +35,7 @@ public class CloudVendorController {
                 HttpStatus.OK,cloudVendorService.getCloudVendor(vendorId));
     }
 
-    @GetMapping()
+    @GetMapping("/getAllVendor")
     public List<CloudVendor> getAllCloudVendorDetails() throws InterruptedException {
         return cloudVendorService.getAllCloudVendors();
     }
@@ -57,10 +57,10 @@ public class CloudVendorController {
        return cloudVendorService.deleteCloudVendor(vendorId);
      }
 
-//    @GetMapping()
-//    public List<CloudVendor> checkAsyncroCall() throws InterruptedException {
-//        return cloudVendorService.getAllCloudVendors();
-//    }
+    @PostMapping("/SaveCheckAsc")
+    public CloudVendor checkAsyncroCall(@RequestBody CloudVendor cloudVendor) throws InterruptedException {
+        return cloudVendorService.getAllCloudVendorsAs(cloudVendor);
+    }
 
 
 }

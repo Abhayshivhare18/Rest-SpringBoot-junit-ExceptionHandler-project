@@ -16,4 +16,6 @@ public interface CloudVendorService {
 
 
     public List<CloudVendor> getAllCloudVendors() throws InterruptedException;
+
+    public CloudVendor getAllCloudVendorsAs(CloudVendor cloudVendor) throws InterruptedException;
 }
