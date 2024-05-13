@@ -5,9 +5,11 @@ package com.thinkconstructive.restdemo.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import org.springframework.cache.annotation.Cacheable;
 
 @Entity
 @Table(name="cloud_vendor_info")
+
 public class CloudVendor {
     @Id
     private String vendorId;
